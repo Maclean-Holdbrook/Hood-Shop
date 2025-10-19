@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/ebene/Desktop/Projects/**)",
+      "Bash(curl:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(findstr:*)",
+      "Read(//c/Users/ebene/Pictures/Screenshots/**)",
+      "Bash(powershell:*)",
+      "Bash(timeout:*)",
+      "Bash(npm install:*)",
+      "Bash(dir routes)",
+      "Bash(psql:*)",
+      "Bash(dir)",
+      "Bash(dir:*)",
+      "Bash(npm run dev)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop-backend\\test-connection.js\")",
+      "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop-backend\\check-database.js\")",
+      "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop\\test-api.html\")",
+      "Bash(git init)",
+      "Bash(git add .)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

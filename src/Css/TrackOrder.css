@@ -1,0 +1,430 @@
+.track-order-page {
+  min-height: 100vh;
+  background-color: #008B8B;
+  padding: 40px 20px;
+}
+
+.track-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #FFDAB9;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+}
+
+.track-container h1 {
+  text-align: center;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+  font-size: 1.1rem;
+}
+
+/* Real-time Alert */
+.real-time-alert {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Track Form */
+.track-form {
+  margin-bottom: 40px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.error-message {
+  background: #fee;
+  color: #c33;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #c33;
+}
+
+.track-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.track-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.track-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Order Details */
+.order-details {
+  margin-top: 40px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.order-header h2 {
+  color: #1a1a2e;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.status-badge {
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Order Info */
+.order-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.info-item {
+  color: #444;
+}
+
+.info-item strong {
+  color: #1a1a2e;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.payment-completed {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.payment-pending {
+  color: #FFA500;
+  font-weight: 600;
+}
+
+.payment-failed {
+  color: #F44336;
+  font-weight: 600;
+}
+
+/* Order Items */
+.order-items {
+  margin-bottom: 30px;
+}
+
+.order-items h3 {
+  color: #1a1a2e;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+.order-item:hover {
+  transform: translateX(5px);
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-details h4 {
+  margin: 0 0 8px 0;
+  color: #1a1a2e;
+  font-size: 1.1rem;
+}
+
+.item-details p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.item-price {
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.1rem !important;
+}
+
+/* Shipping Address */
+.shipping-address {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f0f4ff;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.shipping-address h3 {
+  color: #1a1a2e;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.shipping-address p {
+  margin: 5px 0;
+  color: #444;
+}
+
+/* Status Timeline */
+.status-timeline {
+  margin-bottom: 30px;
+}
+
+.status-timeline h3 {
+  color: #1a1a2e;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -40px;
+  top: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
+}
+
+.timeline-content {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.timeline-content h4 {
+  margin: 0 0 10px 0;
+  color: #1a1a2e;
+  font-size: 1.2rem;
+}
+
+.timeline-comment {
+  margin: 10px 0;
+  color: #555;
+  font-style: italic;
+}
+
+.timeline-date {
+  margin: 5px 0;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.timeline-admin {
+  margin: 5px 0;
+  color: #667eea;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* WebSocket Status */
+.websocket-status {
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.websocket-status .connected {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.websocket-status .disconnected {
+  color: #F44336;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .track-container {
+    padding: 25px;
+  }
+
+  .track-container h1 {
+    font-size: 2rem;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .order-info {
+    grid-template-columns: 1fr;
+  }
+
+  .order-item {
+    flex-direction: column;
+  }
+
+  .item-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .timeline {
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    left: 10px;
+  }
+
+  .timeline-dot {
+    left: -35px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .track-container {
+    padding: 20px;
+  }
+
+  .track-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
