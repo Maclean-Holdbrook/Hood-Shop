@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSignOutAlt, FaHeart, FaBox, FaBars, FaTimes, FaTruck } from "react-icons/fa";
 import { useAuth } from "../Context/AuthContext";
@@ -14,6 +14,7 @@ const Navbar = () => {
   const cartCount = getCartItemsCount();
   const wishlistCount = getWishlistCount();
   const [showMenu, setShowMenu] = useState(false);
+  const navbarRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -24,8 +25,28 @@ const Navbar = () => {
     setShowMenu(!showMenu);
   };
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    // Only add listener when menu is open
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showMenu]);
+
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navbarRef}>
       <div className="navbar-logo">
         <Link to="/">
           <img src={logo} alt="Hood Shop" className="navbar-logo-img" />

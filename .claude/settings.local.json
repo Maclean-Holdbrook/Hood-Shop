@@ -21,7 +21,18 @@
       "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop-backend\\check-database.js\")",
       "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop\\test-api.html\")",
       "Bash(git init)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Hood Shop - Modern E-Commerce Platform\n\n- Full-stack e-commerce application with React frontend\n- Product browsing with search and filtering\n- Shopping cart and wishlist functionality\n- User authentication (email/password + Google OAuth)\n- Admin dashboard for product and order management\n- Real-time order tracking with WebSocket\n- Responsive design for all devices\n- Supabase backend integration\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git remote add origin https://github.com/Maclean-Holdbrook/Hood-Shop.git)",
+      "Bash(git push -u origin master)",
+      "Bash(git add vercel.json)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd vercel.json for SPA routing to fix admin routes\n\n- Configure Vercel to redirect all routes to index.html\n- Fixes 404 errors when accessing /admin/login and other routes directly\n- Enables proper client-side routing with React Router\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)",
+      "Read(//c/Users/ebene/Documents/**)",
+      "Bash(del \"C:\\Users\\ebene\\Desktop\\Projects\\hood-shop\\src\\Css\\Cart.css\")",
+      "Bash(git log -1 --format='%an %ae')",
+      "Bash(git add src/Components/FloatingCartButton.jsx src/Components/ProductOptionsModal.jsx src/Css/FloatingCartButton.css src/Css/ProductOptionsModal.css)",
+      "Bash(git add -u)"
     ],
     "deny": [],
     "ask": []

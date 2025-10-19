@@ -3,45 +3,68 @@ import { toast } from 'react-hot-toast';
 
 const CartContext = createContext();
 
+// Helper function to create unique cart item ID with variants
+const getCartItemKey = (product) => {
+  const { id, selectedSize, selectedColor } = product;
+  return `${id}-${selectedSize || 'nosize'}-${selectedColor || 'nocolor'}`;
+};
+
 // Cart reducer for state management
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
-      const existingItem = state.items.find(item => item.id === action.payload.id);
+      const cartKey = getCartItemKey(action.payload);
+      const existingItem = state.items.find(item => getCartItemKey(item) === cartKey);
+
       if (existingItem) {
+        // If same variant exists, increase quantity
         return {
           ...state,
           items: state.items.map(item =>
-            item.id === action.payload.id
-              ? { ...item, quantity: item.quantity + 1 }
+            getCartItemKey(item) === cartKey
+              ? { ...item, quantity: item.quantity + (action.payload.quantity || 1) }
               : item
           ),
-          total: state.total + action.payload.price,
+          total: state.total + (action.payload.price * (action.payload.quantity || 1)),
         };
       }
+
+      // Add new item with unique cart key
       return {
         ...state,
-        items: [...state.items, { ...action.payload, quantity: 1 }],
-        total: state.total + action.payload.price,
+        items: [...state.items, {
+          ...action.payload,
+          cartItemKey: cartKey,
+          quantity: action.payload.quantity || 1
+        }],
+        total: state.total + (action.payload.price * (action.payload.quantity || 1)),
       };
 
     case 'REMOVE_FROM_CART':
-      const itemToRemove = state.items.find(item => item.id === action.payload);
+      const itemToRemove = state.items.find(item =>
+        item.cartItemKey === action.payload || item.id === action.payload
+      );
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.payload),
+        items: state.items.filter(item =>
+          item.cartItemKey !== action.payload && item.id !== action.payload
+        ),
         total: state.total - (itemToRemove ? itemToRemove.price * itemToRemove.quantity : 0),
       };
 
     case 'UPDATE_QUANTITY':
-      const itemToUpdate = state.items.find(item => item.id === action.payload.id);
+      const itemToUpdate = state.items.find(item =>
+        item.cartItemKey === action.payload.id || item.id === action.payload.id
+      );
       if (!itemToUpdate) return state;
 
       const newQuantity = action.payload.quantity;
       if (newQuantity <= 0) {
         return {
           ...state,
-          items: state.items.filter(item => item.id !== action.payload.id),
+          items: state.items.filter(item =>
+            item.cartItemKey !== action.payload.id && item.id !== action.payload.id
+          ),
           total: state.total - (itemToUpdate.price * itemToUpdate.quantity),
         };
       }
@@ -49,7 +72,7 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         items: state.items.map(item =>
-          item.id === action.payload.id
+          (item.cartItemKey === action.payload.id || item.id === action.payload.id)
             ? { ...item, quantity: newQuantity }
             : item
         ),

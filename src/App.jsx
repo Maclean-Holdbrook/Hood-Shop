@@ -30,7 +30,8 @@ import { ProductProvider } from "./Context/ProductContext";
 import { WishlistProvider } from "./Context/WishlistContext";
 
 const App = () => {
-  const router = createBrowserRouter([
+  const router = createBrowserRouter(
+    [
     {
       path: "/",
       element: <Layout />,
@@ -121,7 +122,14 @@ const App = () => {
       path: "admin/customers",
       element: <AdminCustomers />,
     },
-  ]);
+  ],
+  {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    },
+  }
+  );
   
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

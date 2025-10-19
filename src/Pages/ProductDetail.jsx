@@ -50,6 +50,11 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
+    if (isOutOfStock) {
+      toast.error('Product is out of stock');
+      return;
+    }
+
     if (!selectedSize && product?.sizes?.length > 0) {
       toast.error('Please select a size');
       return;
@@ -59,19 +64,24 @@ const ProductDetail = () => {
       return;
     }
 
+    if (quantity > maxQuantity) {
+      toast.error(`Only ${maxQuantity} items available`);
+      return;
+    }
+
     const cartItem = {
       ...product,
       selectedSize,
       selectedColor,
       quantity,
     };
-    
+
     addToCart(cartItem);
     toast.success(`${product.name} added to cart!`);
   };
 
   const handleQuantityChange = (newQuantity) => {
-    if (newQuantity >= 1 && newQuantity <= (product?.stock || 99)) {
+    if (newQuantity >= 1 && newQuantity <= maxQuantity) {
       setQuantity(newQuantity);
     }
   };
@@ -137,6 +147,11 @@ const ProductDetail = () => {
   const cartQuantity = getItemQuantity(product.id);
   const isInCartProduct = isInCart(product.id);
   const inWishlist = isInWishlist(product.id);
+
+  // Check stock availability
+  const stock = product.stock ?? product.stock_quantity ?? null;
+  const isOutOfStock = stock !== null && stock <= 0;
+  const maxQuantity = stock !== null ? stock : 999;
 
   return (
     <div className="product-detail-container">
@@ -230,6 +245,19 @@ const ProductDetail = () => {
             </div>
           )}
 
+          {/* Stock Information */}
+          <div className="stock-status">
+            {isOutOfStock ? (
+              <span className="out-of-stock">Out of Stock</span>
+            ) : stock !== null && stock <= 10 ? (
+              <span className="low-stock">Only {stock} left in stock!</span>
+            ) : stock !== null ? (
+              <span className="in-stock">In Stock ({stock} available)</span>
+            ) : (
+              <span className="in-stock">In Stock</span>
+            )}
+          </div>
+
           {product.sizes && product.sizes.length > 0 && (
             <div className="product-sizes">
               <h3>Size</h3>
@@ -271,14 +299,14 @@ const ProductDetail = () => {
             <div className="quantity-controls">
               <button
                 onClick={() => handleQuantityChange(quantity - 1)}
-                disabled={quantity <= 1}
+                disabled={quantity <= 1 || isOutOfStock}
               >
                 -
               </button>
               <span>{quantity}</span>
               <button
                 onClick={() => handleQuantityChange(quantity + 1)}
-                disabled={quantity >= (product.stock || 99)}
+                disabled={quantity >= maxQuantity || isOutOfStock}
               >
                 +
               </button>
@@ -287,14 +315,16 @@ const ProductDetail = () => {
 
           <div className="product-actions">
             <button
-              className={`add-to-cart-btn ${isInCartProduct ? 'in-cart' : ''}`}
+              className={`add-to-cart-btn ${isInCartProduct ? 'in-cart' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
               onClick={handleAddToCart}
-              disabled={!product.stock}
+              disabled={isOutOfStock}
             >
               <FaShoppingCart />
-              {isInCartProduct 
-                ? `In Cart (${cartQuantity})` 
-                : product.stock ? 'Add to Cart' : 'Out of Stock'
+              {isOutOfStock
+                ? 'Out of Stock'
+                : isInCartProduct
+                ? `In Cart (${cartQuantity})`
+                : 'Add to Cart'
               }
             </button>
           </div>

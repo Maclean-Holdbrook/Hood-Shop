@@ -25,12 +25,16 @@ const Cart = () => {
     return sum + (itemPrice * item.quantity);
   }, 0);
 
-  const handleQuantityChange = (productId, newQuantity) => {
-    updateQuantity(productId, newQuantity);
+  const handleQuantityChange = (item, newQuantity) => {
+    // Use cartItemKey if available, otherwise use id
+    const itemId = item.cartItemKey || item.id;
+    updateQuantity(itemId, newQuantity);
   };
 
-  const openRemoveModal = (productId, productName) => {
-    setRemoveModal({ isOpen: true, productId, productName });
+  const openRemoveModal = (item, productName) => {
+    // Use cartItemKey if available, otherwise use id
+    const itemId = item.cartItemKey || item.id;
+    setRemoveModal({ isOpen: true, productId: itemId, productName });
   };
 
   const handleRemoveItem = () => {
@@ -91,13 +95,24 @@ const Cart = () => {
         <div className="cart-items">
           {items.map((item) => (
             <motion.div
-              key={item.id}
+              key={item.cartItemKey || item.id}
               className="cart-item"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
+              <div className="item-image">
+                <img
+                  src={item.images?.[0] || item.image || 'https://via.placeholder.com/80'}
+                  alt={item.name}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://via.placeholder.com/80';
+                  }}
+                />
+              </div>
+
               <div className="item-details">
                 <h3 className="item-name">{item.name}</h3>
                 {item.selectedSize && (
@@ -111,24 +126,31 @@ const Cart = () => {
                     ? item.price.replace('$', '')
                     : item.price.toFixed(2)}
                 </p>
-              </div>
 
-              <div className="item-quantity">
-                <label>Quantity:</label>
-                <div className="quantity-controls">
-                  <button
-                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    <FaMinus />
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                  >
-                    <FaPlus />
-                  </button>
+                <div className="item-quantity-mobile">
+                  <label>Qty:</label>
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() => handleQuantityChange(item, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                    >
+                      <FaMinus />
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() => handleQuantityChange(item, item.quantity + 1)}
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
                 </div>
+
+                <button
+                  className="remove-item-btn-mobile"
+                  onClick={() => openRemoveModal(item, item.name)}
+                >
+                  <FaTrash /> Remove
+                </button>
               </div>
 
               <div className="item-total">
@@ -138,14 +160,6 @@ const Cart = () => {
                     : item.price) * item.quantity).toFixed(2)}
                 </p>
               </div>
-
-              <button
-                className="remove-item-btn"
-                onClick={() => openRemoveModal(item.id, item.name)}
-                title="Remove item"
-              >
-                <FaTrash />
-              </button>
             </motion.div>
           ))}
         </div>

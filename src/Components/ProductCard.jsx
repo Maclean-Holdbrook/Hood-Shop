@@ -1,24 +1,51 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaHeart, FaEye } from 'react-icons/fa';
 import { useCart } from '../Context/CartContext';
 import { useWishlist } from '../Context/WishlistContext';
 import { toast } from 'react-hot-toast';
+import ProductOptionsModal from './ProductOptionsModal';
 import '../Css/ProductCard.css';
 
 const ProductCard = ({ product, showQuickActions = true }) => {
   const { addToCart, isInCart, getItemQuantity } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isInCartProduct = isInCart(product.id);
   const cartQuantity = getItemQuantity(product.id);
   const inWishlist = isInWishlist(product.id);
 
+  // Check stock availability
+  const stock = product.stock ?? product.stock_quantity ?? null;
+  const isOutOfStock = stock !== null && stock <= 0;
+
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+
+    // Don't add if out of stock
+    if (isOutOfStock) {
+      return;
+    }
+
+    // Check if product has size or color options
+    const hasSizes = product.sizes || product.available_sizes;
+    const hasColors = product.colors || product.available_colors;
+
+    if (hasSizes || hasColors) {
+      // Open modal for options selection
+      setIsModalOpen(true);
+    } else {
+      // Add directly to cart
+      addToCart(product);
+    }
+  };
+
+  const handleModalAddToCart = (productWithOptions) => {
+    addToCart(productWithOptions);
+    setIsModalOpen(false);
   };
 
   const handleAddToWishlist = (e) => {
@@ -61,13 +88,19 @@ const ProductCard = ({ product, showQuickActions = true }) => {
               e.target.src = 'https://via.placeholder.com/400x400.png?text=Product';
             }}
           />
-          {product.discount && (
+          {isOutOfStock && (
+            <div className="product-out-of-stock-badge">Out of Stock</div>
+          )}
+          {!isOutOfStock && product.discount && (
             <div className="product-discount">
               -{product.discount}%
             </div>
           )}
-          {(product.isNew || product.is_new) && (
+          {!isOutOfStock && (product.isNew || product.is_new) && (
             <div className="product-new-badge">New</div>
+          )}
+          {!isOutOfStock && stock !== null && stock <= 10 && stock > 0 && (
+            <div className="product-low-stock-badge">Only {stock} left</div>
           )}
         </div>
         
@@ -104,14 +137,15 @@ const ProductCard = ({ product, showQuickActions = true }) => {
       {showQuickActions && (
         <div className="product-actions">
           <button
-            className={`action-btn add-to-cart-btn ${isInCartProduct ? 'in-cart' : ''}`}
+            className={`action-btn add-to-cart-btn ${isInCartProduct ? 'in-cart' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
             onClick={handleAddToCart}
-            title={isInCartProduct ? `In cart (${cartQuantity})` : 'Add to cart'}
+            disabled={isOutOfStock}
+            title={isOutOfStock ? 'Out of stock' : isInCartProduct ? `In cart (${cartQuantity})` : 'Add to cart'}
           >
             <FaShoppingCart />
-            {isInCartProduct ? `In Cart (${cartQuantity})` : 'Add to Cart'}
+            {isOutOfStock ? 'Out of Stock' : isInCartProduct ? `In Cart (${cartQuantity})` : 'Add to Cart'}
           </button>
-          
+
           <div className="quick-actions">
             <button
               className={`action-btn quick-action-btn ${inWishlist ? 'in-wishlist' : ''}`}
@@ -124,6 +158,14 @@ const ProductCard = ({ product, showQuickActions = true }) => {
           </div>
         </div>
       )}
+
+      {/* Product Options Modal */}
+      <ProductOptionsModal
+        product={product}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddToCart={handleModalAddToCart}
+      />
     </motion.div>
   );
 };

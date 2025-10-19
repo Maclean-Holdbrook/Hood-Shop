@@ -23,7 +23,7 @@ const Checkout = () => {
     city: "",
     state: "",
     zipCode: "",
-    country: "United States",
+    country: "",
   });
 
   const [paymentInfo, setPaymentInfo] = useState({
