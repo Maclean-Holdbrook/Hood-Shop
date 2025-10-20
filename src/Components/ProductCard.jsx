@@ -30,17 +30,8 @@ const ProductCard = ({ product, showQuickActions = true }) => {
       return;
     }
 
-    // Check if product has size or color options
-    const hasSizes = product.sizes || product.available_sizes;
-    const hasColors = product.colors || product.available_colors;
-
-    if (hasSizes || hasColors) {
-      // Open modal for options selection
-      setIsModalOpen(true);
-    } else {
-      // Add directly to cart
-      addToCart(product);
-    }
+    // Always open modal to show product details and options
+    setIsModalOpen(true);
   };
 
   const handleModalAddToCart = (productWithOptions) => {

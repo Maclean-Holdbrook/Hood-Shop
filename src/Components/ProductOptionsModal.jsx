@@ -28,11 +28,15 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
       return;
     }
 
-    // Validate selections
-    if (sizes.length > 0 && !selectedSize) {
+    // Only validate if options are actually available
+    const hasSizes = product?.sizes?.length > 0 || product?.available_sizes?.length > 0;
+    const hasColors = product?.colors?.length > 0 || product?.available_colors?.length > 0;
+
+    // Validate selections only if options exist
+    if (hasSizes && !selectedSize) {
       newErrors.size = 'Please select a size';
     }
-    if (colors.length > 0 && !selectedColor) {
+    if (hasColors && !selectedColor) {
       newErrors.color = 'Please select a color';
     }
 
