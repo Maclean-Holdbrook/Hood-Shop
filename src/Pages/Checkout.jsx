@@ -8,6 +8,61 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import "../Css/Checkout.css";
 
+// List of countries with their phone codes
+const COUNTRIES = [
+  { name: "Afghanistan", code: "+93" },
+  { name: "Albania", code: "+355" },
+  { name: "Algeria", code: "+213" },
+  { name: "Argentina", code: "+54" },
+  { name: "Australia", code: "+61" },
+  { name: "Austria", code: "+43" },
+  { name: "Bangladesh", code: "+880" },
+  { name: "Belgium", code: "+32" },
+  { name: "Brazil", code: "+55" },
+  { name: "Canada", code: "+1" },
+  { name: "China", code: "+86" },
+  { name: "Colombia", code: "+57" },
+  { name: "Denmark", code: "+45" },
+  { name: "Egypt", code: "+20" },
+  { name: "Finland", code: "+358" },
+  { name: "France", code: "+33" },
+  { name: "Germany", code: "+49" },
+  { name: "Ghana", code: "+233" },
+  { name: "Greece", code: "+30" },
+  { name: "India", code: "+91" },
+  { name: "Indonesia", code: "+62" },
+  { name: "Ireland", code: "+353" },
+  { name: "Israel", code: "+972" },
+  { name: "Italy", code: "+39" },
+  { name: "Japan", code: "+81" },
+  { name: "Kenya", code: "+254" },
+  { name: "Malaysia", code: "+60" },
+  { name: "Mexico", code: "+52" },
+  { name: "Netherlands", code: "+31" },
+  { name: "New Zealand", code: "+64" },
+  { name: "Nigeria", code: "+234" },
+  { name: "Norway", code: "+47" },
+  { name: "Pakistan", code: "+92" },
+  { name: "Philippines", code: "+63" },
+  { name: "Poland", code: "+48" },
+  { name: "Portugal", code: "+351" },
+  { name: "Russia", code: "+7" },
+  { name: "Saudi Arabia", code: "+966" },
+  { name: "Singapore", code: "+65" },
+  { name: "South Africa", code: "+27" },
+  { name: "South Korea", code: "+82" },
+  { name: "Spain", code: "+34" },
+  { name: "Sweden", code: "+46" },
+  { name: "Switzerland", code: "+41" },
+  { name: "Thailand", code: "+66" },
+  { name: "Turkey", code: "+90" },
+  { name: "Ukraine", code: "+380" },
+  { name: "United Arab Emirates", code: "+971" },
+  { name: "United Kingdom", code: "+44" },
+  { name: "United States", code: "+1" },
+  { name: "Vietnam", code: "+84" },
+].sort((a, b) => a.name.localeCompare(b.name));
+
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, clearCart, getCartItemsCount } = useCart();
@@ -18,12 +73,13 @@ const Checkout = () => {
   const [shippingInfo, setShippingInfo] = useState({
     fullName: user?.name || "",
     email: user?.email || "",
+    phoneCode: user?.phoneCode || "",
     phone: user?.phone || "",
     address: user?.address || "",
     city: user?.city || "",
     state: user?.state || "",
     zipCode: user?.zipCode || "",
-    country: user?.country || "United States",
+    country: user?.country || "",
   });
 
   const [paymentInfo, setPaymentInfo] = useState({
@@ -54,12 +110,13 @@ const Checkout = () => {
       setShippingInfo({
         fullName: user.name || "",
         email: user.email || "",
+        phoneCode: user.phoneCode || "",
         phone: user.phone || "",
         address: user.address || "",
         city: user.city || "",
         state: user.state || "",
         zipCode: user.zipCode || "",
-        country: user.country || "United States",
+        country: user.country || "",
       });
     }
   }, [user]);
@@ -131,19 +188,17 @@ const Checkout = () => {
     } else if (!/\S+@\S+\.\S+/.test(shippingInfo.email)) {
       newErrors.email = "Email is invalid";
     }
+    if (!shippingInfo.phoneCode) newErrors.phoneCode = "Country code is required";
     if (!shippingInfo.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^\d{10}$/.test(shippingInfo.phone.replace(/\D/g, ""))) {
-      newErrors.phone = "Phone number must be 10 digits";
+    } else if (shippingInfo.phone.replace(/\D/g, "").length < 7) {
+      newErrors.phone = "Phone number is too short";
     }
     if (!shippingInfo.address.trim()) newErrors.address = "Address is required";
     if (!shippingInfo.city.trim()) newErrors.city = "City is required";
     if (!shippingInfo.state.trim()) newErrors.state = "State is required";
-    if (!shippingInfo.zipCode.trim()) {
-      newErrors.zipCode = "ZIP code is required";
-    } else if (!/^\d{5}$/.test(shippingInfo.zipCode)) {
-      newErrors.zipCode = "ZIP code must be 5 digits";
-    }
+    if (!shippingInfo.zipCode.trim()) newErrors.zipCode = "ZIP/Postal code is required";
+    if (!shippingInfo.country) newErrors.country = "Country is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -211,6 +266,7 @@ const Checkout = () => {
         shipping_address: {
           fullName: shippingInfo.fullName,
           email: shippingInfo.email,
+          phoneCode: shippingInfo.phoneCode,
           phone: shippingInfo.phone,
           address: shippingInfo.address,
           city: shippingInfo.city,
@@ -327,8 +383,29 @@ const Checkout = () => {
                     />
                     {errors.email && <span className="error-message">{errors.email}</span>}
                   </div>
+                </div>
+
+                <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="phone">Phone *</label>
+                    <label htmlFor="phoneCode">Country Code *</label>
+                    <select
+                      id="phoneCode"
+                      name="phoneCode"
+                      value={shippingInfo.phoneCode}
+                      onChange={handleShippingChange}
+                      className={errors.phoneCode ? "error" : ""}
+                    >
+                      <option value="">Select Code</option>
+                      {COUNTRIES.map((country) => (
+                        <option key={country.name} value={country.code}>
+                          {country.code} {country.name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.phoneCode && <span className="error-message">{errors.phoneCode}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number *</label>
                     <input
                       type="tel"
                       id="phone"
@@ -336,7 +413,7 @@ const Checkout = () => {
                       value={shippingInfo.phone}
                       onChange={handleShippingChange}
                       className={errors.phone ? "error" : ""}
-                      placeholder="(555) 555-5555"
+                      placeholder="123456789"
                     />
                     {errors.phone && <span className="error-message">{errors.phone}</span>}
                   </div>
@@ -383,7 +460,7 @@ const Checkout = () => {
                     {errors.state && <span className="error-message">{errors.state}</span>}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="zipCode">ZIP Code *</label>
+                    <label htmlFor="zipCode">ZIP/Postal Code *</label>
                     <input
                       type="text"
                       id="zipCode"
@@ -393,6 +470,27 @@ const Checkout = () => {
                       className={errors.zipCode ? "error" : ""}
                     />
                     {errors.zipCode && <span className="error-message">{errors.zipCode}</span>}
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group full-width">
+                    <label htmlFor="country">Country *</label>
+                    <select
+                      id="country"
+                      name="country"
+                      value={shippingInfo.country}
+                      onChange={handleShippingChange}
+                      className={errors.country ? "error" : ""}
+                    >
+                      <option value="">Select Country</option>
+                      {COUNTRIES.map((country) => (
+                        <option key={country.name} value={country.name}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.country && <span className="error-message">{errors.country}</span>}
                   </div>
                 </div>
 
@@ -514,7 +612,7 @@ const Checkout = () => {
                 <p>{shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipCode}</p>
                 <p>{shippingInfo.country}</p>
                 <p>{shippingInfo.email}</p>
-                <p>{shippingInfo.phone}</p>
+                <p>{shippingInfo.phoneCode} {shippingInfo.phone}</p>
                 <button className="edit-btn" onClick={() => setStep(1)}>Edit</button>
               </div>
 
