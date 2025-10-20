@@ -476,20 +476,15 @@ const Checkout = () => {
                 <div className="form-row">
                   <div className="form-group full-width">
                     <label htmlFor="country">Country *</label>
-                    <select
+                    <input
+                      type="text"
                       id="country"
                       name="country"
                       value={shippingInfo.country}
                       onChange={handleShippingChange}
+                      placeholder="Enter your country"
                       className={errors.country ? "error" : ""}
-                    >
-                      <option value="">Select Country</option>
-                      {COUNTRIES.map((country) => (
-                        <option key={country.name} value={country.name}>
-                          {country.name}
-                        </option>
-                      ))}
-                    </select>
+                    />
                     {errors.country && <span className="error-message">{errors.country}</span>}
                   </div>
                 </div>
