@@ -140,7 +140,8 @@ const AdminProducts = () => {
         discount: formData.discount ? parseInt(formData.discount) : 0,
         category: formData.category,
         stock: parseInt(formData.stock),
-        images: imageUrls,
+        // Only update images if new ones were uploaded, otherwise keep existing images
+        images: imageFiles.length > 0 ? imageUrls : (editingProduct ? editingProduct.images : []),
         sizes: formData.sizes ? formData.sizes.split(',').map(s => s.trim()) : [],
         colors: formData.colors ? formData.colors.split(',').map(c => c.trim()) : [],
         features: formData.features ? formData.features.split('\n').filter(f => f.trim()) : [],
