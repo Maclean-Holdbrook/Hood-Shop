@@ -99,10 +99,10 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
           />
           <motion.div
             className="product-options-modal"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
             <button className="modal-close-btn" onClick={handleClose}>
@@ -110,20 +110,57 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
             </button>
 
             <div className="modal-content">
-              <div className="modal-product-info">
+              {/* Product Image - Larger */}
+              <div className="modal-product-image-container">
                 <img
-                  src={product.images?.[0] || product.image || 'https://via.placeholder.com/100'}
+                  src={product.images?.[0] || product.image || 'https://via.placeholder.com/400'}
                   alt={product.name}
-                  className="modal-product-image"
+                  className="modal-product-image-large"
                 />
-                <div className="modal-product-details">
-                  <h3>{product.name}</h3>
-                  <p className="modal-product-price">
+              </div>
+
+              {/* Product Info */}
+              <div className="modal-product-info">
+                <h3 className="modal-product-title">{product.name}</h3>
+
+                {/* Rating */}
+                {product.rating && (
+                  <div className="modal-product-rating">
+                    {[...Array(5)].map((_, i) => (
+                      <span
+                        key={i}
+                        className={`star ${i < Math.floor(parseFloat(product.rating)) ? 'filled' : ''}`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                    <span className="rating-count">({product.rating_count || product.ratingCount || 0})</span>
+                  </div>
+                )}
+
+                {/* Price */}
+                <div className="modal-price-container">
+                  {(product.originalPrice || product.original_price) && (
+                    <span className="modal-original-price">
+                      ${typeof (product.originalPrice || product.original_price) === 'string'
+                        ? (product.originalPrice || product.original_price).replace('$', '')
+                        : (product.originalPrice || product.original_price)?.toFixed(2)}
+                    </span>
+                  )}
+                  <span className="modal-product-price">
                     ${typeof product.price === 'string'
                       ? product.price.replace('$', '')
                       : product.price?.toFixed(2)}
-                  </p>
+                  </span>
+                  {product.discount && (
+                    <span className="modal-discount-badge">-{product.discount}%</span>
+                  )}
                 </div>
+
+                {/* Description */}
+                {product.description && (
+                  <p className="modal-product-description">{product.description}</p>
+                )}
               </div>
 
               {/* Size Selection */}
