@@ -7,6 +7,7 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 9998;
   backdrop-filter: blur(4px);
+  overflow: hidden;
 }
 
 .product-options-modal {
@@ -17,9 +18,11 @@
   background: white;
   border-radius: 20px 20px 0 0;
   z-index: 9999;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .modal-close-btn {
