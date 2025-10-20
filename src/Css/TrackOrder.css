@@ -2,6 +2,7 @@
   min-height: 100vh;
   background-color: #008B8B;
   padding: 40px 20px;
+  color: #ffffff;
 }
 
 .track-container {
@@ -9,8 +10,9 @@
   margin: 0 auto;
   background: #FFDAB9;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   padding: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .track-container h1 {
@@ -18,13 +20,15 @@
   color: #1a1a2e;
   margin-bottom: 10px;
   font-size: 2.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .subtitle {
   text-align: center;
-  color: #333;
+  color: #1a1a2e;
   margin-bottom: 40px;
   font-size: 1.1rem;
+  font-weight: 500;
 }
 
 /* Real-time Alert */
@@ -62,8 +66,8 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #333;
-  font-weight: 600;
+  color: #1a1a2e;
+  font-weight: 700;
   font-size: 0.95rem;
 }
 
@@ -170,7 +174,7 @@
 }
 
 .info-item {
-  color: #444;
+  color: #1a1a2e;
 }
 
 .info-item strong {
@@ -243,7 +247,7 @@
 
 .item-details p {
   margin: 5px 0;
-  color: #666;
+  color: #333;
   font-size: 0.9rem;
 }
 
@@ -270,7 +274,7 @@
 
 .shipping-address p {
   margin: 5px 0;
-  color: #444;
+  color: #1a1a2e;
 }
 
 /* Status Timeline */
@@ -335,14 +339,15 @@
 
 .timeline-comment {
   margin: 10px 0;
-  color: #555;
+  color: #333;
   font-style: italic;
 }
 
 .timeline-date {
   margin: 5px 0;
-  color: #888;
+  color: #666;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .timeline-admin {

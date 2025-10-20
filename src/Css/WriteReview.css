@@ -4,6 +4,7 @@
   padding: 2rem 1rem;
   min-height: calc(100vh - 200px);
   background-color: #008B8B;
+  color: #ffffff;
 }
 
 .back-button {
@@ -11,31 +12,37 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #f3f4f6;
+  background: #ffffff;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a2e;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .back-button:hover {
-  background: #e5e7eb;
+  background: #f3f4f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .write-review-content {
   background: #FFDAB9;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .product-summary {
   display: flex;
   gap: 1.5rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -50,7 +57,8 @@
 .product-summary .product-info h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: #1a1a2e;
+  font-weight: 700;
 }
 
 .product-summary .product-price {
@@ -66,12 +74,15 @@
 .review-form-container h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: #1a1a2e;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .review-subtitle {
-  color: #6b7280;
+  color: #374151;
   margin-bottom: 2rem;
+  font-weight: 500;
 }
 
 .review-form .form-group {
@@ -80,9 +91,9 @@
 
 .review-form label {
   display: block;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #374151;
+  color: #1a1a2e;
 }
 
 .rating-input {
@@ -113,7 +124,7 @@
   margin-left: 1rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #6b7280;
+  color: #374151;
 }
 
 .review-form input[type="text"],
@@ -143,8 +154,9 @@
   display: block;
   text-align: right;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #374151;
   margin-top: 0.25rem;
+  font-weight: 500;
 }
 
 .form-actions {
@@ -168,8 +180,9 @@
 }
 
 .cancel-btn {
-  background: #f3f4f6;
-  color: #374151;
+  background: #ffffff;
+  color: #1a1a2e;
+  border: 2px solid #e5e7eb;
 }
 
 .cancel-btn:hover {
@@ -194,7 +207,8 @@
   text-align: center;
   padding: 3rem;
   font-size: 1.25rem;
-  color: #6b7280;
+  color: #374151;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {

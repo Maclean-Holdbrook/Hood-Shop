@@ -2,6 +2,7 @@
   min-height: 100vh;
   background-color: #008B8B;
   padding: 60px 20px 40px;
+  color: #ffffff;
 }
 
 .legal-container {
@@ -9,9 +10,10 @@
   margin: 0 auto;
   background: #FFDAB9;
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   padding: 50px;
   animation: fadeIn 0.5s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes fadeIn {
@@ -46,7 +48,7 @@
 .legal-section {
   margin-bottom: 40px;
   padding: 25px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 12px;
   border-left: 4px solid #008B8B;
   transition: all 0.3s ease;
@@ -66,7 +68,7 @@
 }
 
 .legal-section p {
-  color: #444;
+  color: #1a1a2e;
   line-height: 1.8;
   margin-bottom: 15px;
   font-size: 1rem;
@@ -78,7 +80,7 @@
 }
 
 .legal-section li {
-  color: #444;
+  color: #1a1a2e;
   line-height: 1.8;
   margin-bottom: 10px;
   font-size: 1rem;
