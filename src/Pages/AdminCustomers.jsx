@@ -21,7 +21,9 @@ const AdminCustomers = () => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
       toast.error('Please login as admin');
-      navigate('/admin/login');
+      // Save the intended page before redirecting to admin login
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/admin/login?returnUrl=${encodeURIComponent(intendedPage)}`);
       return;
     }
     fetchCustomers();
@@ -53,7 +55,9 @@ const AdminCustomers = () => {
       console.error('Error fetching customers:', error);
       if (error.response?.status === 401) {
         toast.error('Session expired. Please login again');
-        navigate('/admin/login');
+        // Save the intended page before redirecting to admin login
+        const intendedPage = window.location.pathname + window.location.search;
+        navigate(`/admin/login?returnUrl=${encodeURIComponent(intendedPage)}`);
       } else {
         toast.error('Failed to load customers');
       }

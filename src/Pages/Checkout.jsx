@@ -125,7 +125,9 @@ const Checkout = () => {
   React.useEffect(() => {
     if (!isAuthenticated) {
       toast.error("Please sign in to checkout");
-      navigate("/signin?returnUrl=/checkout");
+      // Save the intended page before redirecting to sign-in
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
     }
     if (getCartItemsCount() === 0) {
       toast.error("Your cart is empty");

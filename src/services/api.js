@@ -36,7 +36,9 @@ api.interceptors.response.use(
       localStorage.removeItem('userData');
       // Only redirect if not on auth pages
       if (!window.location.pathname.includes('/signin') && !window.location.pathname.includes('/signup')) {
-        window.location.href = '/signin';
+        // Save the intended page (current URL) before redirecting to sign-in
+        const intendedPage = window.location.pathname + window.location.search;
+        window.location.href = `/signin?returnUrl=${encodeURIComponent(intendedPage)}`;
       }
     }
     return Promise.reject(error);

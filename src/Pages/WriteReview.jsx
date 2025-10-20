@@ -23,7 +23,9 @@ const WriteReview = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error('Please sign in to write a review');
-      navigate('/signin', { state: { from: `/product/${id}/review` } });
+      // Save the intended page before redirecting to sign-in
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
       return;
     }
 

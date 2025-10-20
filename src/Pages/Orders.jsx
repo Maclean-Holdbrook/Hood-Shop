@@ -16,7 +16,9 @@ const Orders = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/signin");
+      // Save the intended page before redirecting to sign-in
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
       return;
     }
 
@@ -28,7 +30,9 @@ const Orders = () => {
       const token = localStorage.getItem("authToken");
 
       if (!token) {
-        navigate("/signin");
+        // Save the intended page before redirecting to sign-in
+        const intendedPage = window.location.pathname + window.location.search;
+        navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
         return;
       }
 
@@ -48,7 +52,9 @@ const Orders = () => {
       console.error("Error fetching orders:", error);
       if (error.response?.status === 401) {
         toast.error("Session expired. Please sign in again.");
-        navigate("/signin");
+        // Save the intended page before redirecting to sign-in
+        const intendedPage = window.location.pathname + window.location.search;
+        navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
       } else {
         toast.error("Failed to load orders");
       }

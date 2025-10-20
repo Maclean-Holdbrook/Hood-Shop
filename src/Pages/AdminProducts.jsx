@@ -35,7 +35,9 @@ const AdminProducts = () => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
       toast.error('Please login as admin');
-      navigate('/admin/login');
+      // Save the intended page before redirecting to admin login
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/admin/login?returnUrl=${encodeURIComponent(intendedPage)}`);
       return;
     }
     fetchProducts();

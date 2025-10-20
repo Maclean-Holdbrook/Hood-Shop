@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { FaLock, FaEnvelope } from 'react-icons/fa';
@@ -7,11 +7,15 @@ import '../Css/AdminLogin.css';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [loading, setLoading] = useState(false);
+
+  // Get the return URL from query params or default to dashboard
+  const returnUrl = new URLSearchParams(location.search).get('returnUrl') || '/admin/dashboard';
 
   const handleChange = (e) => {
     setFormData({
@@ -36,7 +40,8 @@ const AdminLogin = () => {
         localStorage.setItem('adminData', JSON.stringify(response.data.admin));
 
         toast.success('Welcome back, Admin!');
-        navigate('/admin/dashboard');
+        // Redirect to intended page or dashboard
+        navigate(returnUrl, { replace: true });
       }
     } catch (error) {
       console.error('Login error:', error);

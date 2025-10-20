@@ -81,7 +81,9 @@ const Profile = () => {
 
   React.useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/signin");
+      // Save the intended page before redirecting to sign-in
+      const intendedPage = window.location.pathname + window.location.search;
+      navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
     }
   }, [isAuthenticated, navigate]);
 
