@@ -1,43 +1,18 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaHeart, FaEye } from 'react-icons/fa';
-import { useCart } from '../Context/CartContext';
+import { FaHeart } from 'react-icons/fa';
 import { useWishlist } from '../Context/WishlistContext';
-import { toast } from 'react-hot-toast';
-import ProductOptionsModal from './ProductOptionsModal';
 import '../Css/ProductCard.css';
 
 const ProductCard = ({ product, showQuickActions = true }) => {
-  const { addToCart, isInCart, getItemQuantity } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const isInCartProduct = isInCart(product.id);
-  const cartQuantity = getItemQuantity(product.id);
   const inWishlist = isInWishlist(product.id);
 
   // Check stock availability
   const stock = product.stock ?? product.stock_quantity ?? null;
   const isOutOfStock = stock !== null && stock <= 0;
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Don't add if out of stock
-    if (isOutOfStock) {
-      return;
-    }
-
-    // Always open modal to show product details and options
-    setIsModalOpen(true);
-  };
-
-  const handleModalAddToCart = (productWithOptions) => {
-    addToCart(productWithOptions);
-    setIsModalOpen(false);
-  };
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();
@@ -127,16 +102,6 @@ const ProductCard = ({ product, showQuickActions = true }) => {
 
       {showQuickActions && (
         <div className="product-actions">
-          <button
-            className={`action-btn add-to-cart-btn ${isInCartProduct ? 'in-cart' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
-            onClick={handleAddToCart}
-            disabled={isOutOfStock}
-            title={isOutOfStock ? 'Out of stock' : isInCartProduct ? `In cart (${cartQuantity})` : 'Add to cart'}
-          >
-            <FaShoppingCart />
-            {isOutOfStock ? 'Out of Stock' : isInCartProduct ? `In Cart (${cartQuantity})` : 'Add to Cart'}
-          </button>
-
           <div className="quick-actions">
             <button
               className={`action-btn quick-action-btn ${inWishlist ? 'in-wishlist' : ''}`}
@@ -149,14 +114,6 @@ const ProductCard = ({ product, showQuickActions = true }) => {
           </div>
         </div>
       )}
-
-      {/* Product Options Modal */}
-      <ProductOptionsModal
-        product={product}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddToCart={handleModalAddToCart}
-      />
     </motion.div>
   );
 };
