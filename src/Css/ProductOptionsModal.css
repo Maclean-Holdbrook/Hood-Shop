@@ -4,10 +4,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99998;
   backdrop-filter: blur(4px);
-  overflow: hidden;
   touch-action: none;
 }
 
@@ -18,15 +19,12 @@
   right: 0;
   background: white;
   border-radius: 20px 20px 0 0;
-  z-index: 9999;
-  max-height: 80vh;
+  z-index: 99999;
+  max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
   touch-action: pan-y;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 .modal-close-btn {
@@ -276,9 +274,14 @@
     max-width: 500px;
     width: 90%;
     max-height: 80vh;
+    touch-action: auto;
   }
 
   .modal-content {
     padding: 30px;
+  }
+
+  .modal-overlay {
+    touch-action: auto;
   }
 }

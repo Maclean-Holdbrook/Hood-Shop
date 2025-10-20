@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaShoppingCart } from 'react-icons/fa';
 import '../Css/ProductOptionsModal.css';
@@ -73,42 +74,19 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
   // Lock body scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
-      // Get current scroll position
-      const scrollY = window.scrollY;
-
-      // Lock the body
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
+      // Prevent body scroll
       document.body.style.overflow = 'hidden';
-
-      // Store scroll position
-      document.body.dataset.scrollY = scrollY;
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.dataset.scrollY;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-
-      // Restore scroll
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY));
-      }
     }
 
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
+      // Restore body scroll
       document.body.style.overflow = '';
     };
   }, [isOpen]);
 
   if (!product) return null;
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -125,6 +103,7 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <button className="modal-close-btn" onClick={handleClose}>
               <FaTimes />
@@ -251,6 +230,12 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
         </>
       )}
     </AnimatePresence>
+  );
+
+  // Render modal at the root level using portal
+  return ReactDOM.createPortal(
+    modalContent,
+    document.body
   );
 };
 
