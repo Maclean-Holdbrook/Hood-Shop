@@ -69,19 +69,36 @@ const ProductOptionsModal = ({ product, isOpen, onClose, onAddToCart }) => {
   // Lock body scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      // Get current scroll position
+      const scrollY = window.scrollY;
+
+      // Lock the body
       document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+
+      // Store scroll position
+      document.body.dataset.scrollY = scrollY;
     } else {
-      document.body.style.overflow = '';
+      // Restore scroll position
+      const scrollY = document.body.dataset.scrollY;
       document.body.style.position = '';
+      document.body.style.top = '';
       document.body.style.width = '';
+      document.body.style.overflow = '';
+
+      // Restore scroll
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY));
+      }
     }
 
     return () => {
-      document.body.style.overflow = '';
       document.body.style.position = '';
+      document.body.style.top = '';
       document.body.style.width = '';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
