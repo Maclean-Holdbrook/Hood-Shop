@@ -18,7 +18,7 @@
 
 .support-subtitle {
   font-size: 1.25rem;
-  color: #6c757d;
+  color: whitesmoke;
 }
 
 .support-content {
@@ -31,13 +31,13 @@
 .contact-form-section h2 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: whitesmoke;
   margin-bottom: 1rem;
 }
 
 .contact-info > p {
   font-size: 1rem;
-  color: #6c757d;
+  color: whitesmoke;
   margin-bottom: 2rem;
 }
 
