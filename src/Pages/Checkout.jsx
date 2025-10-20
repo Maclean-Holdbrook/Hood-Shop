@@ -18,12 +18,12 @@ const Checkout = () => {
   const [shippingInfo, setShippingInfo] = useState({
     fullName: user?.name || "",
     email: user?.email || "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "",
+    phone: user?.phone || "",
+    address: user?.address || "",
+    city: user?.city || "",
+    state: user?.state || "",
+    zipCode: user?.zipCode || "",
+    country: user?.country || "United States",
   });
 
   const [paymentInfo, setPaymentInfo] = useState({
@@ -47,6 +47,22 @@ const Checkout = () => {
   const shippingCost = 0; // Free shipping
   const tax = cartTotal * 0.08; // 8% tax
   const orderTotal = cartTotal + shippingCost + tax;
+
+  // Auto-fill shipping info from user profile
+  React.useEffect(() => {
+    if (user) {
+      setShippingInfo({
+        fullName: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
+        city: user.city || "",
+        state: user.state || "",
+        zipCode: user.zipCode || "",
+        country: user.country || "United States",
+      });
+    }
+  }, [user]);
 
   // Redirect if not authenticated or cart is empty
   React.useEffect(() => {

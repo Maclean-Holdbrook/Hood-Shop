@@ -204,22 +204,23 @@ const AdminProducts = () => {
   };
 
   const handleDelete = async (productId) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
 
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(
+      const response = await axios.delete(
         `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/admin/products/${productId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      toast.success('Product deleted successfully!');
+      toast.success(response.data.message || 'Product deleted successfully!');
       fetchProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
-      toast.error('Failed to delete product');
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Failed to delete product';
+      toast.error(errorMessage);
     }
   };
 
