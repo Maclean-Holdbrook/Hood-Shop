@@ -89,9 +89,16 @@ const Profile = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // For phone field, only allow digits and limit to 15 characters
+    let formattedValue = value;
+    if (name === "phone") {
+      formattedValue = value.replace(/\D/g, "").slice(0, 15);
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -281,6 +288,8 @@ const Profile = () => {
                         onChange={handleChange}
                         placeholder="123456789"
                         className={errors.phone ? "error" : ""}
+                        inputMode="numeric"
+                        maxLength="15"
                       />
                     </div>
                     {(errors.phoneCode || errors.phone) && (

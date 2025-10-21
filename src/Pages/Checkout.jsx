@@ -137,9 +137,16 @@ const Checkout = () => {
 
   const handleShippingChange = (e) => {
     const { name, value } = e.target;
+
+    // For phone field, only allow digits and limit to 15 characters
+    let formattedValue = value;
+    if (name === "phone") {
+      formattedValue = value.replace(/\D/g, "").slice(0, 15);
+    }
+
     setShippingInfo((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: formattedValue,
     }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -416,6 +423,8 @@ const Checkout = () => {
                       onChange={handleShippingChange}
                       className={errors.phone ? "error" : ""}
                       placeholder="123456789"
+                      inputMode="numeric"
+                      maxLength="15"
                     />
                     {errors.phone && <span className="error-message">{errors.phone}</span>}
                   </div>
