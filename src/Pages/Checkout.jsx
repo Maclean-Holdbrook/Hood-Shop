@@ -290,7 +290,7 @@ const Checkout = () => {
         total_amount: orderTotal,
       };
 
-      // Send order to backend API
+      // Send order to backend API with extended timeout
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/orders`,
         orderData,
@@ -299,6 +299,7 @@ const Checkout = () => {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
+          timeout: 60000, // 60 seconds timeout (increased from default)
         }
       );
 
@@ -314,11 +315,17 @@ const Checkout = () => {
     } catch (error) {
       console.error("Order placement error:", error);
 
-      if (error.response?.status === 401) {
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error("Order processing is taking longer than expected. Please check your orders page to confirm.");
+      } else if (error.response?.status === 401) {
         toast.error("Session expired. Please sign in again.");
-        navigate("/signin");
+        // Save the intended page before redirecting to sign-in
+        const intendedPage = window.location.pathname + window.location.search;
+        navigate(`/signin?returnUrl=${encodeURIComponent(intendedPage)}`);
       } else if (error.response?.data?.error) {
         toast.error(error.response.data.error);
+      } else if (error.message) {
+        toast.error(`Error: ${error.message}`);
       } else {
         toast.error("Failed to place order. Please try again.");
       }
